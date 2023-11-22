@@ -8,7 +8,7 @@ public class Motors {
     public final static PWMSparkMax m_rightDrive = new PWMSparkMax(3);
     public final static PWMSparkMax m_rightDriveTwo = new PWMSparkMax(1);
 
-    public Motors() {
+    public static void setMotors() {
         m_leftDrive.setInverted(true);
         m_leftDriveTwo.setInverted(true);
     }

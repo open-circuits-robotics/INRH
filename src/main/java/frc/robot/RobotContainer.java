@@ -21,6 +21,7 @@ public class RobotContainer {
   private final Timer m_timer;
 
   public RobotContainer() {
+    Motors.setMotors();
     driveTrainSubsystem = new DriveTrainSubsystem();
     xboxController = new XboxController(0);
     m_timer = new Timer();

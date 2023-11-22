@@ -15,6 +15,8 @@ public class ContinuousDriveXbox extends CommandBase {
         driveTrainSubsystem = dTrainSubsystem;
         xboxController = xController;
 
+        addRequirements(driveTrainSubsystem);
+
     }
 
     @Override
@@ -24,6 +26,8 @@ public class ContinuousDriveXbox extends CommandBase {
 
     @Override
     public void execute() {
+        System.out.print(xboxController.getLeftY());
+        System.out.print("\r");
         driveTrainSubsystem.mecanumDrive.driveCartesian(
             DriveMath.calculateSpeed(xboxController.getLeftY(), 1-xboxController.getLeftTriggerAxis()), 
             DriveMath.calculateSpeed((xboxController.getLeftX() * -1), 1-xboxController.getLeftTriggerAxis()), 
