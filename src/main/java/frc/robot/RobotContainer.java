@@ -4,38 +4,46 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.ADIS16470_IMU;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.ContinuousAutonomous;
 import frc.robot.commands.ContinuousDriveXbox;
+import frc.robot.commands.SpinLeft;
 import frc.robot.subsystems.DriveTrainSubsystem;
 
 public class RobotContainer {
 
   private final DriveTrainSubsystem driveTrainSubsystem;
-  private final XboxController xboxController;
+  private final CommandXboxController xboxController;
   private final ContinuousDriveXbox continuousDriveXbox;
   private final ContinuousAutonomous continuousAutonomous;
   private final Timer m_timer;
+  public static final ADIS16470_IMU imu = new ADIS16470_IMU();
 
   public RobotContainer() {
     Motors.setMotors();
     driveTrainSubsystem = new DriveTrainSubsystem();
-    xboxController = new XboxController(0);
+    xboxController = new CommandXboxController(0);
     m_timer = new Timer();
 
     continuousAutonomous = new ContinuousAutonomous(driveTrainSubsystem, m_timer);
 
-    continuousDriveXbox = new ContinuousDriveXbox(driveTrainSubsystem, xboxController);
+    continuousDriveXbox = new ContinuousDriveXbox(driveTrainSubsystem, xboxController.getHID());
     
     driveTrainSubsystem.setDefaultCommand(continuousDriveXbox);
 
     configureBindings();
+    imu.calibrate();
   }
 
-  private void configureBindings() {}
+  private void configureBindings() {
+    Trigger spinLTrigger = xboxController.x();
+    spinLTrigger.whileTrue(new SpinLeft(driveTrainSubsystem, imu));
+  }
 
   public Command getAutonomousCommand() {
     return continuousAutonomous;
