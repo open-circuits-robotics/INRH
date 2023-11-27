@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.ContinuousAutonomous;
 import frc.robot.commands.ContinuousDriveXbox;
-import frc.robot.commands.SpinLeft;
+import frc.robot.commands.Spin;
 import frc.robot.subsystems.DriveTrainSubsystem;
 
 public class RobotContainer {
@@ -42,7 +42,7 @@ public class RobotContainer {
 
   private void configureBindings() {
     Trigger spinLTrigger = xboxController.x();
-    spinLTrigger.whileTrue(new SpinLeft(driveTrainSubsystem, imu));
+    spinLTrigger.whileTrue(new Spin(driveTrainSubsystem, imu));
   }
 
   public Command getAutonomousCommand() {
