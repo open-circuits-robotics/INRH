@@ -6,33 +6,37 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.ADIS16470_IMU;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.ContinuousAutonomous;
 import frc.robot.commands.ContinuousDriveXbox;
+import frc.robot.commands.DiagnosticCommand;
 import frc.robot.commands.Spin;
+import frc.robot.subsystems.ControlSubsystem;
 import frc.robot.subsystems.DriveTrainSubsystem;
 
 public class RobotContainer {
 
   private final DriveTrainSubsystem driveTrainSubsystem;
+  private final ControlSubsystem controlSubsystem;
   private final CommandXboxController xboxController;
   private final ContinuousDriveXbox continuousDriveXbox;
   private final ContinuousAutonomous continuousAutonomous;
+  
   private final Timer m_timer;
   public static final ADIS16470_IMU imu = new ADIS16470_IMU();
 
   public RobotContainer() {
-    Motors.setMotors();
-    driveTrainSubsystem = new DriveTrainSubsystem();
     xboxController = new CommandXboxController(0);
     m_timer = new Timer();
-
+    Motors.setMotors();
+    controlSubsystem = new ControlSubsystem(xboxController.getHID(), 1, 0.82, 0);
+    driveTrainSubsystem = new DriveTrainSubsystem();
+    
     continuousAutonomous = new ContinuousAutonomous(driveTrainSubsystem, m_timer);
 
-    continuousDriveXbox = new ContinuousDriveXbox(driveTrainSubsystem, xboxController.getHID());
+    continuousDriveXbox = new ContinuousDriveXbox(driveTrainSubsystem, controlSubsystem);
     
     driveTrainSubsystem.setDefaultCommand(continuousDriveXbox);
 
@@ -43,6 +47,8 @@ public class RobotContainer {
   private void configureBindings() {
     Trigger spinLTrigger = xboxController.x();
     spinLTrigger.whileTrue(new Spin(driveTrainSubsystem, imu));
+    Trigger diagnostic = xboxController.a();
+    diagnostic.onTrue(new DiagnosticCommand(driveTrainSubsystem, m_timer));
   }
 
   public Command getAutonomousCommand() {
