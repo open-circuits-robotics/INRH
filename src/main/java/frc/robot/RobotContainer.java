@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.ContinuousAutonomous;
 import frc.robot.commands.ContinuousDriveXbox;
-import frc.robot.commands.DiagnosticCommand;
+import frc.robot.commands.TestMotor;
 import frc.robot.commands.Spin;
 import frc.robot.subsystems.ControlSubsystem;
 import frc.robot.subsystems.DriveTrainSubsystem;
@@ -47,8 +47,14 @@ public class RobotContainer {
   private void configureBindings() {
     Trigger spinLTrigger = xboxController.x();
     spinLTrigger.whileTrue(new Spin(driveTrainSubsystem, imu));
-    Trigger diagnostic = xboxController.a();
-    diagnostic.onTrue(new DiagnosticCommand(driveTrainSubsystem, m_timer));
+    Trigger a = xboxController.a();
+    a.onTrue(new TestMotor(Motors.m_leftDrive));
+    Trigger b = xboxController.b();
+    b.onTrue(new TestMotor(Motors.m_leftDriveTwo));
+    Trigger x = xboxController.x();
+    x.onTrue(new TestMotor(Motors.m_rightDrive));
+    Trigger y = xboxController.y();
+    y.onTrue(new TestMotor(Motors.m_rightDriveTwo));
   }
 
   public Command getAutonomousCommand() {
