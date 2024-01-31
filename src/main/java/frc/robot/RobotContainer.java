@@ -35,7 +35,7 @@ public class RobotContainer {
     xboxController = new CommandXboxController(0);
     m_timer = new Timer();
     Motors.setMotors();
-    controlSubsystem    = new ControlSubsystem(xboxController.getHID(), 1, 0.82, 2);
+    controlSubsystem    = new ControlSubsystem(xboxController.getHID(), 1, 1.0, 2);
     driveTrainSubsystem = new DriveTrainSubsystem();
     limelightSubsystem = new LimelightSubsystem();
 
