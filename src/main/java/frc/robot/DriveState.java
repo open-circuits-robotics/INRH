@@ -15,5 +15,6 @@ public class DriveState {
 
     public void sync(DriveTrainSubsystem driveTrainSubsystem) {
         driveTrainSubsystem.differentialDrive.arcadeDrive(xSpeed, rotation);
+        System.out.println(xSpeed + " " + rotation);
     }
 }

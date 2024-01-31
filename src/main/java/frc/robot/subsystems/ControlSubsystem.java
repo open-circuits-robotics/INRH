@@ -12,7 +12,7 @@ public class ControlSubsystem extends SubsystemBase {
     public final int mode;
     
     public ControlSubsystem(XboxController xController) {
-        this(xController, 1.0, 0.82, 1);
+        this(xController, 1.0, 1.0, 2);
     }
     
     public ControlSubsystem(XboxController xController, double sen, double rotSpeed, int m) {
@@ -41,9 +41,10 @@ public class ControlSubsystem extends SubsystemBase {
             //look at me doing stuff that makes sense with the stuff that's already there
             //or something
             case 2:
-                driveState = new DriveState(xboxController.getLeftY() * Math.abs(xboxController.getLeftY()), 
-                0,
-                xboxController.getRightX() * Math.abs(xboxController.getRightX()));
+                driveState = new DriveState(
+                    DriveMath.calculateSpeed(xboxController.getLeftY(), sensitivity), 
+                    0,
+                    DriveMath.calculateTurnSpeed(xboxController.getRightX(), rotationSpeed));
             default:
                 driveState = new DriveState(
                     DriveMath.calculateSpeed(xboxController.getLeftY(), 1-xboxController.getLeftTriggerAxis()), 
