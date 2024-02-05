@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.DriveMath;
 import frc.robot.DriveState;
@@ -26,16 +27,24 @@ public class ControlSubsystem extends SubsystemBase {
     public DriveState getRoughDriveState() {
         DriveState driveState;
 
+        sensitivity = SmartDashboard.getNumber("DB/Slider 0", 0.0) / 5;
+        rotationSpeed = SmartDashboard.getNumber("DB/Slider 1", 0.0) / 5;
+        SmartDashboard.putString("DB/String 0", "Slider 0 is speed sensitivity");
+        SmartDashboard.putString("DB/String 1", "Slider 1 is turn sensitivity");
+        
+
         switch (mode) {
             case 0:
                 driveState = new DriveState(
-                    DriveMath.calculateSpeed(driveXboxController.getLeftY(), 1-driveXboxController.getLeftTriggerAxis()), 
-                    DriveMath.calculateSpeed((driveXboxController.getLeftX() * -1), 1-driveXboxController.getLeftTriggerAxis()), 
-                    DriveMath.calculateTurnSpeed(driveXboxController.getRightX()*-1, 0.82),
+                    DriveMath.calculateSpeed(driveXboxController.getLeftY(), sensitivity), 
+                    0, 
+                    DriveMath.calculateTurnSpeed(driveXboxController.getRightX(), rotationSpeed),
                     0,
                     0,
                     0
                 );
+                System.out.println("case 0");
+                break;
             case 1:
                 driveState = new DriveState(
                     DriveMath.calculateSpeed(driveXboxController.getLeftY(), sensitivity),
@@ -45,6 +54,9 @@ public class ControlSubsystem extends SubsystemBase {
                     0,
                     0
                 );
+                
+                System.out.println("case 1");
+                break;
             //this one is for tank drive!
             //look at me doing stuff that makes sense with the stuff that's already there
             //or something
@@ -57,6 +69,9 @@ public class ControlSubsystem extends SubsystemBase {
                     peripheralXboxController.getRightY(),
                     0
                     );
+                    
+                System.out.println("case 2");
+                break;
             default:
                 driveState = new DriveState(
                     DriveMath.calculateSpeed(driveXboxController.getLeftY(), 1-driveXboxController.getLeftTriggerAxis()), 
@@ -66,6 +81,9 @@ public class ControlSubsystem extends SubsystemBase {
                     0,
                     0
                 );
+                
+                System.out.println("default");
+                break;
         }
         return driveState;
     }
