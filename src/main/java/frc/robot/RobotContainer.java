@@ -23,7 +23,8 @@ public class RobotContainer {
   private final DriveTrainSubsystem driveTrainSubsystem;
   private final ControlSubsystem controlSubsystem;
   private final LimelightSubsystem limelightSubsystem;
-  private final CommandXboxController xboxController;
+  private final CommandXboxController driveXboxController;
+  private final CommandXboxController peripheralXboxController;
   private final ContinuousDriveXbox continuousDriveXbox;
   private final ContinuousAutonomous continuousAutonomous;
   private final ContinuousLimelight continuousLimelight;
@@ -32,10 +33,11 @@ public class RobotContainer {
   public static final ADIS16470_IMU imu = new ADIS16470_IMU();
 
   public RobotContainer() {
-    xboxController = new CommandXboxController(0);
+    driveXboxController = new CommandXboxController(0);
+    peripheralXboxController = new CommandXboxController(1);
     m_timer = new Timer();
     Motors.setMotors();
-    controlSubsystem    = new ControlSubsystem(xboxController.getHID(), 1, 1.0, 2);
+    controlSubsystem    = new ControlSubsystem(driveXboxController.getHID(), peripheralXboxController.getHID(), 1, 1.0, 2);
     driveTrainSubsystem = new DriveTrainSubsystem();
     limelightSubsystem = new LimelightSubsystem();
 
@@ -52,15 +54,15 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-    Trigger spinLTrigger = xboxController.x();
+    Trigger spinLTrigger = driveXboxController.x();
     spinLTrigger.whileTrue(new Spin(driveTrainSubsystem, imu));
-    Trigger a = xboxController.a();
+    Trigger a = driveXboxController.a();
     a.onTrue(new TestMotor(Motors.m_leftDrive));
-    Trigger b = xboxController.b();
+    Trigger b = driveXboxController.b();
     b.onTrue(new TestMotor(Motors.m_leftDriveTwo));
-    Trigger x = xboxController.x();
+    Trigger x = driveXboxController.x();
     x.onTrue(new TestMotor(Motors.m_rightDrive));
-    Trigger y = xboxController.y();
+    Trigger y = driveXboxController.y();
     y.onTrue(new TestMotor(Motors.m_rightDriveTwo));
   }
 
