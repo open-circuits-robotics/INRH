@@ -19,6 +19,7 @@ public class DriveTrainSubsystem extends SubsystemBase {
         //wpilib 2024 :( 
         //apparently you don't have motorcontrollergroups anymore you just do followers
         Motors.leftDrive.addFollower(Motors.leftDriveTwo);
+  
         Motors.rightDrive.addFollower(Motors.rightDriveTwo);
         differentialDrive = new DifferentialDrive(Motors.leftDrive, Motors.rightDrive);
         //this is mecanum stuff

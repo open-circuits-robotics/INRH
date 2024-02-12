@@ -23,6 +23,6 @@ public class Motors {
 
     public static void setMotors() {
         leftDrive.setInverted(true);
-        
+
     }
 }

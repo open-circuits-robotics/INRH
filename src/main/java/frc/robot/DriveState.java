@@ -24,6 +24,6 @@ public class DriveState {
     public void sync(DriveTrainSubsystem driveTrainSubsystem, IntakeSubsystem intakeSubsystem) {
         driveTrainSubsystem.differentialDrive.arcadeDrive(xSpeed, rotation);
         System.out.println(xSpeed + " " + rotation);
-        intakeSubsystem.intakeMotors.set(intake);
+        intakeSubsystem.intakeMotors.set(intake*0.5);
     }
 }
