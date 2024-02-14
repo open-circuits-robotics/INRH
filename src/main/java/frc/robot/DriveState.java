@@ -14,7 +14,9 @@ public class DriveState {
     }
 
     public void sync(DriveTrainSubsystem driveTrainSubsystem) {
+        //driveTrainSubsystem.differentialDrive.arcadeDrive(xSpeed, rotation);
+        // I wanted the robot not going anywhere yknow
         driveTrainSubsystem.differentialDrive.arcadeDrive(xSpeed, rotation);
-        System.out.println(xSpeed + " " + rotation);
+        //System.out.println(xSpeed + " " + rotation);
     }
 }
