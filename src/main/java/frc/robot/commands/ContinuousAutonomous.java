@@ -25,7 +25,7 @@ public class ContinuousAutonomous extends Command {
     public void execute() {
         if (timer.get() < 4.65) {
             // drives forward
-            driveTrainSubsystem.differentialDrive.arcadeDrive(0.75, 0);
+            driveTrainSubsystem.differentialDrive.arcadeDrive(0.4, 0);
         }
     }
 
