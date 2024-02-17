@@ -25,6 +25,6 @@ public class DriveState {
         driveTrainSubsystem.differentialDrive.arcadeDrive(xSpeed, rotation);
         System.out.println(xSpeed + " " + rotation);
         intakeSubsystem.intakeMotors.set(intake*0.5);
-        intakeSubsystem.shootingMotors.set(shooter);
+        intakeSubsystem.shootingMotors.set(intake);
     }
 }
