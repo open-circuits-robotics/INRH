@@ -27,8 +27,8 @@ public class ControlSubsystem extends SubsystemBase {
     public DriveState getRoughDriveState() {
         DriveState driveState;
 
-        sensitivity = SmartDashboard.getNumber("DB/Slider 0", 5.0) / 5;
-        rotationSpeed = SmartDashboard.getNumber("DB/Slider 1", 5.0) / 5;
+        sensitivity = (SmartDashboard.getNumber("DB/Slider 0", 5.0)+1) / 6;
+        rotationSpeed = (SmartDashboard.getNumber("DB/Slider 1", 5.0)+1) / 6;
         SmartDashboard.putString("DB/String 0", "Slider 0 is speed sensitivity");
         SmartDashboard.putString("DB/String 1", "Slider 1 is turn sensitivity");
         
