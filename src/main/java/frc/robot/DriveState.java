@@ -1,6 +1,6 @@
 package frc.robot;
 
-import frc.robot.hardware.Motors;
+
 import frc.robot.subsystems.DriveTrainSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 
@@ -26,8 +26,7 @@ public class DriveState {
         driveTrainSubsystem.differentialDrive.arcadeDrive(xSpeed, rotation);
         System.out.println(xSpeed + " " + rotation);
         intakeSubsystem.intakeMotors.set(intake*0.5);
-        Motors.can1.set (shooter);
-        Motors.can2.set(shooter * 0.7);
-        System.out.println("shooter: " + shooter);
+        intakeSubsystem.beltShooterMotor.set (shooter);
+        intakeSubsystem.wheelShooterMotor.set(shooter * 0.7);
     }
 }
