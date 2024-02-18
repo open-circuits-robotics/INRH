@@ -10,7 +10,6 @@ public class DriveMath {
         } else {
             x = 0;
         }
-        System.out.println(sensitivity + "aaaaaaaa");
         return x * Math.abs(x) * sensitivity;
     }
 
@@ -23,8 +22,6 @@ public class DriveMath {
         } else {
             x = 0;
         }
-        
-        System.out.println(sensitivity + "aaaaaaaaaaaaaaaaaaaaaaaaa");
         return x * Math.abs(x) * sensitivity;
     }   
 }

@@ -7,11 +7,12 @@ import frc.robot.subsystems.DriveTrainSubsystem;
 public class ContinuousAutonomous extends Command {
     DriveTrainSubsystem driveTrainSubsystem;
     Timer timer;
+
     public ContinuousAutonomous(DriveTrainSubsystem dTrainSubsystem, Timer m_timer) {
         driveTrainSubsystem = dTrainSubsystem;
         timer = m_timer;
         addRequirements(driveTrainSubsystem);
-    } 
+    }
 
     @Override
     public void initialize() {
@@ -23,17 +24,18 @@ public class ContinuousAutonomous extends Command {
     @Override
     public void execute() {
         if (timer.get() < 4.65) {
-            // spins
-            driveTrainSubsystem.differentialDrive.arcadeDrive(0, 1);
+            // drives forward
+            driveTrainSubsystem.differentialDrive.arcadeDrive(0.4, 0);
         }
     }
 
     @Override
-  public void end(boolean interrupted) {}
+    public void end(boolean interrupted) {
+    }
 
-  // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-    return (timer.get() >= 4.65);
-  }
+    // Returns true when the command should end.
+    @Override
+    public boolean isFinished() {
+        return (timer.get() >= 4.65);
+    }
 }

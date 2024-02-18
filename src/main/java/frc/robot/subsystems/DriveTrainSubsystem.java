@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 //import edu.wpi.first.wpilibj.drive.MecanumDrive;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Motors;
+import frc.robot.hardware.Motors;
 
 public class DriveTrainSubsystem extends SubsystemBase {
     
@@ -18,9 +18,10 @@ public class DriveTrainSubsystem extends SubsystemBase {
         //the answer is
         //wpilib 2024 :( 
         //apparently you don't have motorcontrollergroups anymore you just do followers
-        Motors.m_leftDrive.addFollower(Motors.m_leftDriveTwo);
-        Motors.m_rightDrive.addFollower(Motors.m_rightDriveTwo);
-        differentialDrive = new DifferentialDrive(Motors.m_leftDrive, Motors.m_rightDrive);
+        Motors.leftDrive.addFollower(Motors.leftDriveTwo);
+  
+        Motors.rightDrive.addFollower(Motors.rightDriveTwo);
+        differentialDrive = new DifferentialDrive(Motors.leftDrive, Motors.rightDrive);
         //this is mecanum stuff
             /*mecanumDrive = new MecanumDrive(
             Motors.m_leftDrive,
