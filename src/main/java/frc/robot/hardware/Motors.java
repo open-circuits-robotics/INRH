@@ -28,6 +28,7 @@ public class Motors {
 
     public static void setMotors() {
         beltShooterMotor.setInverted(true);
+        wheelShooterMotor.setInverted(true);
         leftDrive.setInverted(true);
 
     }

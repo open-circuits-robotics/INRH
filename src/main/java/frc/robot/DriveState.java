@@ -27,6 +27,7 @@ public class DriveState {
         //System.out.println(xSpeed + " " + rotation);
         intakeSubsystem.intakeMotors.set(intake*0.7);
         intakeSubsystem.beltShooterMotor.set(Math.max(shooter, intake) * 0.5);
-        intakeSubsystem.wheelShooterMotor.set(Math.round(shooter+0.1) * -0.5);
+        intakeSubsystem.wheelShooterMotor.set(Math.round(shooter+0.1) *1);
+        System.out.println(Math.round(shooter + 0.1) * 1);
     }
 }
