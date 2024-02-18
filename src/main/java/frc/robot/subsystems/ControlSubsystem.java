@@ -70,7 +70,7 @@ public class ControlSubsystem extends SubsystemBase {
                     0
                     );
                     
-                System.out.println("case 2");
+                //System.out.println("case 2");
                 break;
             default:
                 driveState = new DriveState(

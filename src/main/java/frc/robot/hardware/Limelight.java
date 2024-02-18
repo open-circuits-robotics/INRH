@@ -10,7 +10,7 @@ public class Limelight {
     public NetworkTableEntry tx, ty, ta;
     public Limelight(String n){
         name = n;
-        System.out.println("Reading limelight "+name);
+        //System.out.println("Reading limelight "+name);
         update();
     }
     public void update(){

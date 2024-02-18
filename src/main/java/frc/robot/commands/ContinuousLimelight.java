@@ -19,13 +19,13 @@ public class ContinuousLimelight extends Command{
     }
     
     public void readLimelight(Limelight l) {
-        System.out.print(l.name+":");
+       // System.out.print(l.name+":");
             x    = l.tx.getDouble(0.1);
             y    = l.ty.getDouble(0.1);
             area = l.ta.getDouble(0.1);
-            System.out.print(x+",");
-            System.out.print(y+",");
-            System.out.println(area);
+           // System.out.print(x+",");
+            //System.out.print(y+",");
+            //System.out.println(area);
     }
 
     @Override
