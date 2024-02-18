@@ -27,6 +27,7 @@ public class Motors {
 
 
     public static void setMotors() {
+        can1.setInverted(true);
         leftDrive.setInverted(true);
 
     }

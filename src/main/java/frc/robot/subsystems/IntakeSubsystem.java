@@ -8,11 +8,9 @@ import com.revrobotics.CANSparkMax;
 
 public class IntakeSubsystem extends SubsystemBase {
     public final PWMSparkMax intakeMotors;
-    public final CANSparkMax shootingMotors;
+    // public final CANSparkMax shootingMotors;
     public IntakeSubsystem() {
         Motors.leftIntakeMotor.addFollower(Motors.rightIntakeMotor);
-        Motors.can2.follow(Motors.can1);
         intakeMotors = Motors.leftIntakeMotor;
-        shootingMotors = Motors.can1;
     }
 }
