@@ -32,6 +32,7 @@ public class ContinuousAutonomous extends Command {
     @Override
     public void execute() {
         double deltaT = Math.abs(timer.get()-prevTime);
+        double velZ 
         switch (stage) {
             case 0:
                 // Go Forward
