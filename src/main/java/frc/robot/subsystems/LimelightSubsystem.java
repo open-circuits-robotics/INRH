@@ -14,6 +14,12 @@ public class LimelightSubsystem extends SubsystemBase{
         righty = new Limelight("limelight-righty");
     }
 
+    public double getDistanceFromTag() {
+        double[] leftyVals = lefty.readTargetPos();
+        double[] rightyVals = righty.readTargetPos();
+        return (leftyVals[2]+rightyVals[2])/2;
+    }
+
     public void update(){
         lefty.update();
         righty.update();

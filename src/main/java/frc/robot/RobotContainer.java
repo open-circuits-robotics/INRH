@@ -40,7 +40,7 @@ public class RobotContainer {
     limelightSubsystem = new LimelightSubsystem();
 
     
-    continuousAutonomous = new ContinuousAutonomous(driveTrainSubsystem, m_timer);
+    continuousAutonomous = new ContinuousAutonomous(driveTrainSubsystem, m_timer, limelightSubsystem);
     continuousDriveXbox  = new ContinuousDriveXbox(driveTrainSubsystem, controlSubsystem);
     continuousLimelight  = new ContinuousLimelight(limelightSubsystem);
     
