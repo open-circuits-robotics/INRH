@@ -4,16 +4,35 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.hardware.Limelight;
 import frc.robot.subsystems.DriveTrainSubsystem;
+import frc.robot.subsystems.GyroSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 
 public class ContinuousAutonomous extends Command {
     DriveTrainSubsystem driveTrainSubsystem;
     LimelightSubsystem limelightSubsystem;
+    GyroSubsystem gyroSubsystem;
     Timer timer;
     double targetX, targetY, targetZ;
     private int stage;
+    //for stages:
+    //0 - go forward
+    //1 - turn the first time
+    //2 - align with speaker
+    //3 - turn the second time
+    //4 - back up from/go forward to speaker
+    //5 - shoot!!!
+    //6 - idk we done now
     private double prevTime;
-    public ContinuousAutonomous(DriveTrainSubsystem dTrainSubsystem, Timer m_timer, LimelightSubsystem limelightSubsystem) {
+    //these next two are random numbers I made up we need to find those out but that we can do during calibration time :D
+    //how far to go forward from the starting position
+    private double stage0Constant = 2;
+    //distance from the amp that should line us up with the speaker
+    private double distanceFromAmp = 5;
+    private double[] pos;
+    private double[] targetPose;
+    //if false that means we're blue by the way
+    private boolean weAreRed;
+    public ContinuousAutonomous(DriveTrainSubsystem dTrainSubsystem, Timer m_timer, LimelightSubsystem limelightSubsystem, GyroSubsystem gyroSubsystem) {
         driveTrainSubsystem = dTrainSubsystem;
         this.limelightSubsystem = limelightSubsystem;
         timer = m_timer;
@@ -31,26 +50,33 @@ public class ContinuousAutonomous extends Command {
 
     @Override
     public void execute() {
-        double deltaT = Math.abs(timer.get()-prevTime);
-        double velZ 
-        switch (stage) {
-            case 0:
-                // Go Forward
-                
+        pos = gyroSubsystem.getPos(timer.get());
+        switch (stage){
+            case 0: 
+                if (pos[1] < stage0Constant){
+                    //go forward until you're at the appropriate place
+                    System.out.println("x (right): " + pos[0] + ", y (front): " + pos[1] + ", z (up): " + pos[2]);
+                    driveTrainSubsystem.differentialDrive.arcadeDrive(0.5, 0.0);
+                } else {
+                    stage = 1;
+                }
                 break;
+            case 1:
+                //face toward amp
+                if (weAreRed){
+                    //turn right :D 
+                } else {
+                    //turn left :D
+                }
+                break;
+            case 2:
+                //back up or go forward to the appropriate distance from amp
+                targetPose = limelightSubsystem.lefty.readTargetPos();
             default:
+                System.out.println("uh-oh");
+                stage = 6;
                 break;
         }
-        prevTime = timer.get();
-    }
-
-    public void readLimelight(Limelight l){
-        double[] defaultArray = {0,0,0,0,0,0};
-        double[] poseArray = l.targetPose.getDoubleArray(defaultArray);
-        targetX = poseArray[0];
-        targetY = poseArray[1];
-        targetZ = poseArray[2];
-        System.out.println("pose from limelight " + l.name + ": x:" + targetX + " y:" + targetY + " z:" + targetZ);
     }
 
     @Override
@@ -59,6 +85,6 @@ public class ContinuousAutonomous extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (timer.get() >= 14);
+    return ((timer.get() >= 14) || (stage >= 6));
   }
 }

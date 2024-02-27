@@ -16,6 +16,7 @@ import frc.robot.commands.TestMotor;
 import frc.robot.commands.Spin;
 import frc.robot.subsystems.ControlSubsystem;
 import frc.robot.subsystems.DriveTrainSubsystem;
+import frc.robot.subsystems.GyroSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 
 public class RobotContainer {
@@ -27,6 +28,7 @@ public class RobotContainer {
   private final ContinuousDriveXbox continuousDriveXbox;
   private final ContinuousAutonomous continuousAutonomous;
   private final ContinuousLimelight continuousLimelight;
+  private final GyroSubsystem gyroSubsystem;
   
   private final Timer m_timer;
   public static final ADIS16470_IMU imu = new ADIS16470_IMU();
@@ -38,9 +40,10 @@ public class RobotContainer {
     controlSubsystem    = new ControlSubsystem(xboxController.getHID(), 1, 1.0, 2);
     driveTrainSubsystem = new DriveTrainSubsystem();
     limelightSubsystem = new LimelightSubsystem();
+    gyroSubsystem = new GyroSubsystem();
 
     
-    continuousAutonomous = new ContinuousAutonomous(driveTrainSubsystem, m_timer, limelightSubsystem);
+    continuousAutonomous = new ContinuousAutonomous(driveTrainSubsystem, m_timer, limelightSubsystem, gyroSubsystem);
     continuousDriveXbox  = new ContinuousDriveXbox(driveTrainSubsystem, controlSubsystem);
     continuousLimelight  = new ContinuousLimelight(limelightSubsystem);
     
