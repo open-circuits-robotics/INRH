@@ -22,6 +22,10 @@ public class GyroSubsystem extends SubsystemBase {
         return pos;
     }
 
+    public double get_angle() {
+        return gyro.getAngle();
+    }
+
     public void resetGyro(){
         //don't reset vels I don't think because if you do that it will probably get all messed up
         pos[0] = 0;
