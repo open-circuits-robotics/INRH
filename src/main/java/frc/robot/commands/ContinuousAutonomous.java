@@ -28,10 +28,16 @@ public class ContinuousAutonomous extends Command {
     private double stage0Constant = 2;
     //distance from the amp that should line us up with the speaker
     private double distanceFromAmp = 5;
+    //distance from speaker to be at in order to shoot
+    private double distanceFromSpeaker = 5;
+    //margin of error for robot position for those two distances above
+    private double marginOfError = 0.5;
     private double[] pos;
     private double[] targetPose;
+    //****** SET THIS BEFORE EACH MATCH ******** 
     //if false that means we're blue by the way
-    private boolean weAreRed;
+    private boolean weAreRed = true;
+    private double timeStartedShooting;
     public ContinuousAutonomous(DriveTrainSubsystem dTrainSubsystem, Timer m_timer, LimelightSubsystem limelightSubsystem, GyroSubsystem gyroSubsystem) {
         driveTrainSubsystem = dTrainSubsystem;
         this.limelightSubsystem = limelightSubsystem;
@@ -71,7 +77,44 @@ public class ContinuousAutonomous extends Command {
                 break;
             case 2:
                 //back up or go forward to the appropriate distance from amp
+                //i'm assuming lefty's on the front
                 targetPose = limelightSubsystem.lefty.readTargetPos();
+                if (targetPose[3] <= distanceFromAmp - marginOfError){
+                    driveTrainSubsystem.differentialDrive.arcadeDrive(-0.5, 0.0);
+                } else if (targetPose[3] <= distanceFromAmp + marginOfError){
+                    driveTrainSubsystem.differentialDrive.arcadeDrive(0.5, 0.0);
+                } else {
+                    stage = 3;
+                }
+                break;
+            case 3:
+                //face toward speaker
+                if (weAreRed){
+                    //turn left
+                } else {
+                    //turn right
+                }
+                break;
+            case 4:
+                //back up/go forward to appropriate distance from speaker to shoot
+                //assuming righty is the one on the back of the robot
+                targetPose = limelightSubsystem.righty.readTargetPos();
+                if (targetPose[3] <= distanceFromSpeaker - marginOfError){
+                    driveTrainSubsystem.differentialDrive.arcadeDrive(-0.5, 0.0);
+                } else if (targetPose[3] <= distanceFromSpeaker + marginOfError){
+                    driveTrainSubsystem.differentialDrive.arcadeDrive(0.5, 0.0);
+                } else {
+                    stage = 5;
+                    timeStartedShooting = timer.get();
+                }
+                break;
+            case 5:
+                if (timer.get() - timeStartedShooting < 3){
+                    //shoot oh my word we need to merge this with the intakedev
+                } else {
+                    stage = 6;
+                }
+                break;
             default:
                 System.out.println("uh-oh");
                 stage = 6;
