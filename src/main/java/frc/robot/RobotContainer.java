@@ -51,7 +51,7 @@ public class RobotContainer {
 
     
     continuousAutonomous = new ContinuousAutonomous(driveTrainSubsystem, m_timer, limelightSubsystem, gyroSubsystem);
-    continuousDriveXbox  = new ContinuousDriveXbox(driveTrainSubsystem, controlSubsystem);
+    continuousDriveXbox  = new ContinuousDriveXbox(driveTrainSubsystem, controlSubsystem, intakeSubsystem);
     continuousLimelight  = new ContinuousLimelight(limelightSubsystem);
     
     driveTrainSubsystem.setDefaultCommand(continuousDriveXbox);
