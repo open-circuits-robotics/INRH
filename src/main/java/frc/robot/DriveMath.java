@@ -10,7 +10,6 @@ public class DriveMath {
         } else {
             x = 0;
         }
-
         return x * Math.abs(x) * sensitivity;
     }
 
@@ -23,7 +22,6 @@ public class DriveMath {
         } else {
             x = 0;
         }
-        
         return x * Math.abs(x) * sensitivity;
     }   
 }
