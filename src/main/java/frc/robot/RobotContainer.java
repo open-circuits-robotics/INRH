@@ -15,6 +15,7 @@ import frc.robot.commands.ContinuousLimelight;
 import frc.robot.commands.TestMotor;
 import frc.robot.hardware.Motors;
 import frc.robot.commands.Spin;
+import frc.robot.subsystems.CameraSubsystem;
 import frc.robot.subsystems.ControlSubsystem;
 import frc.robot.subsystems.DriveTrainSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -33,10 +34,11 @@ public class RobotContainer {
   private final ContinuousAutonomous continuousAutonomous;
   private final ContinuousLimelight continuousLimelight;
   private final GyroSubsystem gyroSubsystem;
+  private final CameraSubsystem cameraSubsystem;
   
   
   private final Timer m_timer;
-  public static final ADIS16470_IMU imu = new ADIS16470_IMU();
+  //public static final ADIS16470_IMU imu = new ADIS16470_IMU();
 
   public RobotContainer() {
     driveXboxController = new CommandXboxController(0);
@@ -47,6 +49,7 @@ public class RobotContainer {
     driveTrainSubsystem = new DriveTrainSubsystem();
     limelightSubsystem = new LimelightSubsystem();
     gyroSubsystem = new GyroSubsystem();
+    cameraSubsystem = new CameraSubsystem();
     intakeSubsystem = new IntakeSubsystem();
 
     
@@ -58,12 +61,12 @@ public class RobotContainer {
     limelightSubsystem.setDefaultCommand(continuousLimelight);
 
     configureBindings();
-    imu.calibrate();
+    //imu.calibrate();
   }
 
   private void configureBindings() {
-    Trigger spinLTrigger = driveXboxController.x();
-    spinLTrigger.whileTrue(new Spin(driveTrainSubsystem, imu));
+    //Trigger spinLTrigger = driveXboxController.x();
+    //spinLTrigger.whileTrue(new Spin(driveTrainSubsystem, imu));
     Trigger a = driveXboxController.a();
     a.onTrue(new TestMotor(Motors.leftDrive));
     Trigger b = driveXboxController.b();

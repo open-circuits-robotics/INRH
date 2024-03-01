@@ -8,7 +8,7 @@ public class GyroSubsystem extends SubsystemBase {
     private double lastReadingTime = 0;
     private double vels[] = {0, 0, 0};
     private double pos[] = {0, 0, 0};
-
+    
     //FYI!!! X-axis is left-right, Y-axis is front-back, and Z-axis is up-down. Halie I told you so.
     public double[] getPos(double time) {
         double deltaT = time - lastReadingTime;
@@ -32,5 +32,9 @@ public class GyroSubsystem extends SubsystemBase {
         pos[1] = 0;
         pos[2] = 0;
 
+    }
+
+    public void calibrateGyro(){
+        gyro.calibrate();
     }
 }

@@ -29,7 +29,7 @@ public class ContinuousAutonomous extends Command {
     private double turningMarginOfError = 1.0;
     //these next two are random numbers I made up we need to find those out but that we can do during calibration time :D
     //how far to go forward from the starting position
-    private double stage0Constant = 2;
+    private double stage0Constant = -2;
     //distance from the amp that should line us up with the speaker
     private double distanceFromAmp = 5;
     //distance from speaker to be at in order to shoot
@@ -41,11 +41,13 @@ public class ContinuousAutonomous extends Command {
     //****** SET THIS BEFORE EACH MATCH ******** 
     //if false that means we're blue by the way
     private boolean weAreRed = true;
+    private boolean doSimpleAutonomous = false;
     private double timeStartedShooting;
     public ContinuousAutonomous(DriveTrainSubsystem dTrainSubsystem, Timer m_timer, LimelightSubsystem limelightSubsystem, GyroSubsystem gyroSubsystem, IntakeSubsystem intakeSubsystem) {
         driveTrainSubsystem = dTrainSubsystem;
         this.intakeSubsystem = intakeSubsystem;
         this.limelightSubsystem = limelightSubsystem;
+        this.gyroSubsystem = gyroSubsystem;
         timer = m_timer;
         addRequirements(driveTrainSubsystem, limelightSubsystem);
     } 
@@ -57,114 +59,121 @@ public class ContinuousAutonomous extends Command {
         timer.reset();
         timer.start();
         prevTime = timer.get();
+        gyroSubsystem.calibrateGyro();
     }
 
     @Override
     public void execute() {
-        pos = gyroSubsystem.getPos(timer.get());
-        switch (stage){
-            case 0: 
-                if (pos[1] < stage0Constant){
-                    //go forward until you're at the appropriate place
-                    System.out.println("x (right): " + pos[0] + ", y (front): " + pos[1] + ", z (up): " + pos[2]);
-                    driveTrainSubsystem.differentialDrive.arcadeDrive(0.5, 0.0);
-                } else {
-                    driveTrainSubsystem.differentialDrive.arcadeDrive(0.0, 0.0);
-                    stage = 1;
-                }
-                break;
-            case 1:
-                //face toward amp
-                if (weAreRed){
-                    //turn right
-                    if (gyroSubsystem.get_angle() - startAngle >= -90 + turningMarginOfError){
-                        driveTrainSubsystem.differentialDrive.arcadeDrive(0.0, -0.5);
-                    } else if (gyroSubsystem.get_angle() - startAngle <= -90 - turningMarginOfError){
-                        driveTrainSubsystem.differentialDrive.arcadeDrive(0.0, 0.5);
+        if (doSimpleAutonomous){
+            if (timer.get() < 4.65){
+                driveTrainSubsystem.differentialDrive.arcadeDrive(1.0, 0.0);
+            }
+        } else {
+            pos = gyroSubsystem.getPos(timer.get());
+            switch (stage){
+                case 0: 
+                    if (pos[1] > stage0Constant){
+                        //go forward until you're at the appropriate place
+                        System.out.println("x (right): " + pos[0] + ", y (front): " + pos[1] + ", z (up): " + pos[2]);
+                        driveTrainSubsystem.differentialDrive.arcadeDrive(-0.5, 0.0);
                     } else {
                         driveTrainSubsystem.differentialDrive.arcadeDrive(0.0, 0.0);
-                        stage = 2;
+                        stage = 1;
                     }
-                } else {
-                    //turn left
-                    if (gyroSubsystem.get_angle() - startAngle >= 90 + turningMarginOfError){
-                        driveTrainSubsystem.differentialDrive.arcadeDrive(0.0, -0.5);
-                    } else if (gyroSubsystem.get_angle() - startAngle <= 90 - turningMarginOfError){
-                        driveTrainSubsystem.differentialDrive.arcadeDrive(0.0, 0.5);
+                    break;
+                case 1:
+                    //face toward amp
+                    if (weAreRed){
+                        //turn right
+                        if (gyroSubsystem.get_angle() - startAngle >= -90 + turningMarginOfError){
+                            driveTrainSubsystem.differentialDrive.arcadeDrive(0.0, -0.5);
+                        } else if (gyroSubsystem.get_angle() - startAngle <= -90 - turningMarginOfError){
+                            driveTrainSubsystem.differentialDrive.arcadeDrive(0.0, 0.5);
+                        } else {
+                            driveTrainSubsystem.differentialDrive.arcadeDrive(0.0, 0.0);
+                            stage = 2;
+                        }
+                    } else {
+                        //turn left
+                        if (gyroSubsystem.get_angle() - startAngle >= 90 + turningMarginOfError){
+                            driveTrainSubsystem.differentialDrive.arcadeDrive(0.0, -0.5);
+                        } else if (gyroSubsystem.get_angle() - startAngle <= 90 - turningMarginOfError){
+                            driveTrainSubsystem.differentialDrive.arcadeDrive(0.0, 0.5);
+                        } else {
+                            driveTrainSubsystem.differentialDrive.arcadeDrive(0.0, 0.0);
+                            stage = 2;
+                        }
+                    }
+                    break;
+                case 2:
+                    //back up or go forward to the appropriate distance from amp
+                    //righty's on the front
+                    targetPose = limelightSubsystem.righty.readTargetPos();
+                    if (targetPose[3] <= distanceFromAmp - distanceMarginOfError){
+                        driveTrainSubsystem.differentialDrive.arcadeDrive(0.5, 0.0);
+                    } else if (targetPose[3] <= distanceFromAmp + distanceMarginOfError){
+                        driveTrainSubsystem.differentialDrive.arcadeDrive(-0.5, 0.0);
                     } else {
                         driveTrainSubsystem.differentialDrive.arcadeDrive(0.0, 0.0);
-                        stage = 2;
+                        stage = 3;
+                        startAngle = gyroSubsystem.get_angle();
                     }
-                }
-                break;
-            case 2:
-                //back up or go forward to the appropriate distance from amp
-                //righty's on the front
-                targetPose = limelightSubsystem.righty.readTargetPos();
-                if (targetPose[3] <= distanceFromAmp - distanceMarginOfError){
-                    driveTrainSubsystem.differentialDrive.arcadeDrive(-0.5, 0.0);
-                } else if (targetPose[3] <= distanceFromAmp + distanceMarginOfError){
-                    driveTrainSubsystem.differentialDrive.arcadeDrive(0.5, 0.0);
-                } else {
-                    driveTrainSubsystem.differentialDrive.arcadeDrive(0.0, 0.0);
-                    stage = 3;
-                    startAngle = gyroSubsystem.get_angle();
-                }
-                break;
-            case 3:
-                //face toward speaker
-                if (weAreRed){
-                    //turn left
-                    if (gyroSubsystem.get_angle() - startAngle >= 90 + turningMarginOfError){
-                        driveTrainSubsystem.differentialDrive.arcadeDrive(0.0, -0.5);
-                    } else if (gyroSubsystem.get_angle() - startAngle <= 90 - turningMarginOfError){
-                        driveTrainSubsystem.differentialDrive.arcadeDrive(0.0, 0.5);
+                    break;
+                case 3:
+                    //face toward speaker
+                    if (weAreRed){
+                        //turn left
+                        if (gyroSubsystem.get_angle() - startAngle >= 90 + turningMarginOfError){
+                            driveTrainSubsystem.differentialDrive.arcadeDrive(0.0, -0.5);
+                        } else if (gyroSubsystem.get_angle() - startAngle <= 90 - turningMarginOfError){
+                            driveTrainSubsystem.differentialDrive.arcadeDrive(0.0, 0.5);
+                        } else {
+                            driveTrainSubsystem.differentialDrive.arcadeDrive(0.0, 0.0);
+                            stage = 4;
+                        }
+                    } else {
+                        //turn right
+                        if (gyroSubsystem.get_angle() - startAngle >= -90 + turningMarginOfError){
+                            driveTrainSubsystem.differentialDrive.arcadeDrive(0.0, -0.5);
+                        } else if (gyroSubsystem.get_angle() - startAngle <= -90 - turningMarginOfError){
+                            driveTrainSubsystem.differentialDrive.arcadeDrive(0.0, 0.5);
+                        } else {
+                            driveTrainSubsystem.differentialDrive.arcadeDrive(0.0, 0.0);
+                            stage = 4;
+                        }
+                    }
+                    break;
+                case 4:
+                    //back up/go forward to appropriate distance from speaker to shoot
+                    //lefty is the one on the back of the robot
+                    targetPose = limelightSubsystem.lefty.readTargetPos();
+                    if (targetPose[3] <= distanceFromSpeaker - distanceMarginOfError){
+                        driveTrainSubsystem.differentialDrive.arcadeDrive(0.5, 0.0);
+                    } else if (targetPose[3] <= distanceFromSpeaker + distanceMarginOfError){
+                        driveTrainSubsystem.differentialDrive.arcadeDrive(-0.5, 0.0);
                     } else {
                         driveTrainSubsystem.differentialDrive.arcadeDrive(0.0, 0.0);
-                        stage = 4;
+                        timeStartedShooting = timer.get();
+                        stage = 5;
                     }
-                } else {
-                    //turn right
-                    if (gyroSubsystem.get_angle() - startAngle >= -90 + turningMarginOfError){
-                        driveTrainSubsystem.differentialDrive.arcadeDrive(0.0, -0.5);
-                    } else if (gyroSubsystem.get_angle() - startAngle <= -90 - turningMarginOfError){
-                        driveTrainSubsystem.differentialDrive.arcadeDrive(0.0, 0.5);
+                    break;
+                case 5:
+                    if (timer.get() - timeStartedShooting < 3){
+                        intakeSubsystem.beltShooterMotor.set(-0.5);
+                        intakeSubsystem.wheelShooterMotor.set(1.0);
+                        intakeSubsystem.secondWheelShooterMotor.set(1.0);
                     } else {
-                        driveTrainSubsystem.differentialDrive.arcadeDrive(0.0, 0.0);
-                        stage = 4;
+                        intakeSubsystem.beltShooterMotor.set(0);
+                        intakeSubsystem.wheelShooterMotor.set(0);
+                        intakeSubsystem.secondWheelShooterMotor.set(0);
+                        stage = 6;
                     }
-                }
-                break;
-            case 4:
-                //back up/go forward to appropriate distance from speaker to shoot
-                //lefty is the one on the back of the robot
-                targetPose = limelightSubsystem.lefty.readTargetPos();
-                if (targetPose[3] <= distanceFromSpeaker - distanceMarginOfError){
-                    driveTrainSubsystem.differentialDrive.arcadeDrive(-0.5, 0.0);
-                } else if (targetPose[3] <= distanceFromSpeaker + distanceMarginOfError){
-                    driveTrainSubsystem.differentialDrive.arcadeDrive(0.5, 0.0);
-                } else {
-                    driveTrainSubsystem.differentialDrive.arcadeDrive(0.0, 0.0);
-                    timeStartedShooting = timer.get();
-                    stage = 5;
-                }
-                break;
-            case 5:
-                if (timer.get() - timeStartedShooting < 3){
-                    intakeSubsystem.beltShooterMotor.set(0.5);
-                    intakeSubsystem.wheelShooterMotor.set(1.0);
-                    intakeSubsystem.secondWheelShooterMotor.set(1.0);
-                } else {
-                    intakeSubsystem.beltShooterMotor.set(0);
-                    intakeSubsystem.wheelShooterMotor.set(0);
-                    intakeSubsystem.secondWheelShooterMotor.set(0);
+                    break;
+                default:
+                    System.out.println("uh-oh");
                     stage = 6;
-                }
-                break;
-            default:
-                System.out.println("uh-oh");
-                stage = 6;
-                break;
+                   break;
+            }
         }
     }
 
@@ -175,6 +184,6 @@ public class ContinuousAutonomous extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return ((timer.get() >= 14) || (stage >= 6));
+    return (((timer.get() >= 14) || (stage >= 6) && !doSimpleAutonomous) || (timer.get() >= 4.65 && doSimpleAutonomous));
   }
 }
