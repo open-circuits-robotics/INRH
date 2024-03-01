@@ -78,6 +78,7 @@ public class ContinuousAutonomous extends Command {
                         driveTrainSubsystem.differentialDrive.arcadeDrive(-0.5, 0.0);
                     } else {
                         driveTrainSubsystem.differentialDrive.arcadeDrive(0.0, 0.0);
+                        startAngle = gyroSubsystem.get_angle();
                         stage = 1;
                     }
                     break;
@@ -115,8 +116,8 @@ public class ContinuousAutonomous extends Command {
                         driveTrainSubsystem.differentialDrive.arcadeDrive(-0.5, 0.0);
                     } else {
                         driveTrainSubsystem.differentialDrive.arcadeDrive(0.0, 0.0);
-                        stage = 3;
                         startAngle = gyroSubsystem.get_angle();
+                        stage = 3;
                     }
                     break;
                 case 3:
