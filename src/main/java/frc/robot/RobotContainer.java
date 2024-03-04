@@ -19,6 +19,7 @@ import frc.robot.subsystems.ControlSubsystem;
 import frc.robot.subsystems.DriveTrainSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
+import frc.robot.subsystems.ShootingSubsystem;
 
 public class RobotContainer {
 
@@ -31,6 +32,7 @@ public class RobotContainer {
   private final ContinuousDriveXbox continuousDriveXbox;
   private final ContinuousAutonomous continuousAutonomous;
   private final ContinuousLimelight continuousLimelight;
+  private final ShootingSubsystem shootingSubsystem;
   
   
   private final Timer m_timer;
@@ -45,10 +47,11 @@ public class RobotContainer {
     driveTrainSubsystem = new DriveTrainSubsystem();
     limelightSubsystem = new LimelightSubsystem();
     intakeSubsystem = new IntakeSubsystem();
+    shootingSubsystem = new ShootingSubsystem();
 
     
     continuousAutonomous = new ContinuousAutonomous(driveTrainSubsystem, m_timer);
-    continuousDriveXbox  = new ContinuousDriveXbox(driveTrainSubsystem, controlSubsystem, intakeSubsystem);
+    continuousDriveXbox  = new ContinuousDriveXbox(driveTrainSubsystem, controlSubsystem, intakeSubsystem, shootingSubsystem);
     continuousLimelight  = new ContinuousLimelight(limelightSubsystem);
     
     driveTrainSubsystem.setDefaultCommand(continuousDriveXbox);
