@@ -27,8 +27,13 @@ public class DriveState {
         //System.out.println(xSpeed + " " + rotation);
         intakeSubsystem.intakeMotors.set(intake*0.7);
         intakeSubsystem.beltShooterMotor.set(shooter * 0.5);
-        intakeSubsystem.wheelShooterMotor.set(Math.round(shooter+0.1) *1);
-        intakeSubsystem.secondWheelShooterMotor.set(Math.round(shooter+0.1)*1);
+        if (shooter > 0.25) {
+            intakeSubsystem.wheelShooterMotor.set(Math.round(shooter+0.1) *0.5);
+            intakeSubsystem.secondWheelShooterMotor.set(Math.round(shooter+0.1)*0.5);
+        } else {
+            intakeSubsystem.wheelShooterMotor.set(Math.round(intake) *0.75);
+            intakeSubsystem.secondWheelShooterMotor.set(Math.round(intake)*0.75);
+        }
         System.out.println(Math.round(shooter + 0.1) * 1);
     }
 }

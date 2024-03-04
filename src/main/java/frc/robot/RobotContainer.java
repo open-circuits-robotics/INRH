@@ -27,12 +27,12 @@ public class RobotContainer {
   private final DriveTrainSubsystem driveTrainSubsystem;
   private final ControlSubsystem controlSubsystem;
   private final IntakeSubsystem intakeSubsystem;
-  private final LimelightSubsystem limelightSubsystem;
+ // private final LimelightSubsystem limelightSubsystem;
   private final CommandXboxController driveXboxController;
   private final CommandXboxController peripheralXboxController;
   private final ContinuousDriveXbox continuousDriveXbox;
   private final ContinuousAutonomous continuousAutonomous;
-  private final ContinuousLimelight continuousLimelight;
+  //private final ContinuousLimelight continuousLimelight;
   private final GyroSubsystem gyroSubsystem;
   private final CameraSubsystem cameraSubsystem;
   
@@ -47,18 +47,18 @@ public class RobotContainer {
     Motors.setMotors();
     controlSubsystem    = new ControlSubsystem(driveXboxController.getHID(), peripheralXboxController.getHID(), 1, 1.0, 2);
     driveTrainSubsystem = new DriveTrainSubsystem();
-    limelightSubsystem = new LimelightSubsystem();
+    //limelightSubsystem = new LimelightSubsystem();
     gyroSubsystem = new GyroSubsystem();
     cameraSubsystem = new CameraSubsystem();
     intakeSubsystem = new IntakeSubsystem();
 
     
-    continuousAutonomous = new ContinuousAutonomous(driveTrainSubsystem, m_timer, limelightSubsystem, gyroSubsystem, intakeSubsystem);
+    continuousAutonomous = new ContinuousAutonomous(driveTrainSubsystem, m_timer,  gyroSubsystem, intakeSubsystem);
     continuousDriveXbox  = new ContinuousDriveXbox(driveTrainSubsystem, controlSubsystem, intakeSubsystem);
-    continuousLimelight  = new ContinuousLimelight(limelightSubsystem);
+    //continuousLimelight  = new ContinuousLimelight(limelightSubsystem);
     
     driveTrainSubsystem.setDefaultCommand(continuousDriveXbox);
-    limelightSubsystem.setDefaultCommand(continuousLimelight);
+    //limelightSubsystem.setDefaultCommand(continuousLimelight);
 
     configureBindings();
     //imu.calibrate();

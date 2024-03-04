@@ -14,8 +14,8 @@ public class Motors {
     public final static PWMSparkMax leftIntakeMotor = new PWMSparkMax(4);
     public final static PWMSparkMax rightIntakeMotor = new PWMSparkMax(5);
 
-    public final static CANSparkMax beltShooterMotor = new CANSparkMax(1, MotorType.kBrushless);
-    public final static CANSparkMax wheelShooterMotor = new CANSparkMax(2, MotorType.kBrushless);
+    public final static CANSparkMax beltShooterMotor = new CANSparkMax(2, MotorType.kBrushless);
+    public final static CANSparkMax wheelShooterMotor = new CANSparkMax(1, MotorType.kBrushless);
     public final static PWMSparkMax secondWheelShooterMotor = new PWMSparkMax(6);
 
     //motors for option 9

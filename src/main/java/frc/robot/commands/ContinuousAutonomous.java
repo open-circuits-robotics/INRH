@@ -11,7 +11,7 @@ import frc.robot.subsystems.LimelightSubsystem;
 public class ContinuousAutonomous extends Command {
     DriveTrainSubsystem driveTrainSubsystem;
     IntakeSubsystem intakeSubsystem;
-    LimelightSubsystem limelightSubsystem;
+    //LimelightSubsystem limelightSubsystem;
     GyroSubsystem gyroSubsystem;
     Timer timer;
     double targetX, targetY, targetZ;
@@ -24,12 +24,11 @@ public class ContinuousAutonomous extends Command {
     //4 - back up from/go forward to speaker
     //5 - shoot!!!
     //6 - idk we done now
-    private double prevTime;
     private double startAngle;
     private double turningMarginOfError = 1.0;
     //these next two are random numbers I made up we need to find those out but that we can do during calibration time :D
     //how far to go forward from the starting position
-    private double stage0Constant = -2;
+    private double stage0Constant = -3;
     //distance from the amp that should line us up with the speaker
     private double distanceFromAmp = 5;
     //distance from speaker to be at in order to shoot
@@ -40,16 +39,16 @@ public class ContinuousAutonomous extends Command {
     private double[] targetPose;
     //****** SET THIS BEFORE EACH MATCH ******** 
     //if false that means we're blue by the way
-    private boolean weAreRed = true;
-    private boolean doSimpleAutonomous = false;
+    private boolean weAreRed = false;
+    private boolean doSimpleAutonomous = true;
     private double timeStartedShooting;
-    public ContinuousAutonomous(DriveTrainSubsystem dTrainSubsystem, Timer m_timer, LimelightSubsystem limelightSubsystem, GyroSubsystem gyroSubsystem, IntakeSubsystem intakeSubsystem) {
+    public ContinuousAutonomous(DriveTrainSubsystem dTrainSubsystem, Timer m_timer,  GyroSubsystem gyroSubsystem, IntakeSubsystem intakeSubsystem) {
         driveTrainSubsystem = dTrainSubsystem;
         this.intakeSubsystem = intakeSubsystem;
-        this.limelightSubsystem = limelightSubsystem;
+        //this.limelightSubsystem = limelightSubsystem;
         this.gyroSubsystem = gyroSubsystem;
         timer = m_timer;
-        addRequirements(driveTrainSubsystem, limelightSubsystem);
+        addRequirements(driveTrainSubsystem);
     } 
 
     @Override
@@ -58,16 +57,22 @@ public class ContinuousAutonomous extends Command {
         stage = 0;
         timer.reset();
         timer.start();
-        prevTime = timer.get();
         gyroSubsystem.calibrateGyro();
     }
 
     @Override
     public void execute() {
         if (doSimpleAutonomous){
-            if (timer.get() < 4.65){
-                driveTrainSubsystem.differentialDrive.arcadeDrive(1.0, 0.0);
+           // comment first if statement out if robot is not set up in front of speaker thing
+            if (timer.get() < 1){
+                intakeSubsystem.beltShooterMotor.set(0.5);
+                intakeSubsystem.wheelShooterMotor.set(1.0);
+                intakeSubsystem.secondWheelShooterMotor.set(1.0);
             }
+            if (timer.get() < 3.75 && timer.get() > 1.1){
+                driveTrainSubsystem.differentialDrive.arcadeDrive(-0.675, 0.0);
+            }
+
         } else {
             pos = gyroSubsystem.getPos(timer.get());
             switch (stage){
@@ -109,8 +114,8 @@ public class ContinuousAutonomous extends Command {
                 case 2:
                     //back up or go forward to the appropriate distance from amp
                     //righty's on the front
-                    targetPose = limelightSubsystem.righty.readTargetPos();
-                    if (targetPose[3] <= distanceFromAmp - distanceMarginOfError){
+                    //targetPose = limelightSubsystem.righty.readTargetPos();
+                    /*if (targetPose[3] <= distanceFromAmp - distanceMarginOfError){
                         driveTrainSubsystem.differentialDrive.arcadeDrive(0.5, 0.0);
                     } else if (targetPose[3] <= distanceFromAmp + distanceMarginOfError){
                         driveTrainSubsystem.differentialDrive.arcadeDrive(-0.5, 0.0);
@@ -169,7 +174,7 @@ public class ContinuousAutonomous extends Command {
                         intakeSubsystem.secondWheelShooterMotor.set(0);
                         stage = 6;
                     }
-                    break;
+                    break;*/
                 default:
                     System.out.println("uh-oh");
                     stage = 6;

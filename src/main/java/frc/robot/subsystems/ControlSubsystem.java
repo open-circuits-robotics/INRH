@@ -64,7 +64,7 @@ public class ControlSubsystem extends SubsystemBase {
                 driveState = new DriveState(
                     DriveMath.calculateSpeed(driveXboxController.getLeftY(), sensitivity), 
                     0,
-                    DriveMath.calculateTurnSpeed(driveXboxController.getRightX(), rotationSpeed),
+                    DriveMath.calculateTurnSpeed(driveXboxController.getRightX(), rotationSpeed)*0.7,
                     peripheralXboxController.getLeftY(),
                     peripheralXboxController.getLeftTriggerAxis(),
                     0
