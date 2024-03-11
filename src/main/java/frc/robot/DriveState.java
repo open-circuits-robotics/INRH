@@ -2,7 +2,6 @@ package frc.robot;
 
 import frc.robot.hardware.Motors;
 import frc.robot.subsystems.DriveTrainSubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
 
 public class DriveState {
     public final double xSpeed;
@@ -22,10 +21,9 @@ public class DriveState {
         angle = a;
     }
 
-    public void sync(DriveTrainSubsystem driveTrainSubsystem, IntakeSubsystem intakeSubsystem) {
+    public void sync(DriveTrainSubsystem driveTrainSubsystem) {
         driveTrainSubsystem.differentialDrive.arcadeDrive(xSpeed, rotation);
         System.out.println(xSpeed + " " + rotation);
-        intakeSubsystem.intakeMotors.set(intake*0.5);
         Motors.can1.set (shooter);
         Motors.can2.set(shooter * 0.7);
         System.out.println("shooter: " + shooter);

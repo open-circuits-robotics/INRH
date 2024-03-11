@@ -17,14 +17,12 @@ import frc.robot.hardware.Motors;
 import frc.robot.commands.Spin;
 import frc.robot.subsystems.ControlSubsystem;
 import frc.robot.subsystems.DriveTrainSubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 
 public class RobotContainer {
 
   private final DriveTrainSubsystem driveTrainSubsystem;
   private final ControlSubsystem controlSubsystem;
-  private final IntakeSubsystem intakeSubsystem;
   private final LimelightSubsystem limelightSubsystem;
   private final CommandXboxController driveXboxController;
   private final CommandXboxController peripheralXboxController;
@@ -44,11 +42,10 @@ public class RobotContainer {
     controlSubsystem    = new ControlSubsystem(driveXboxController.getHID(), peripheralXboxController.getHID(), 1, 1.0, 2);
     driveTrainSubsystem = new DriveTrainSubsystem();
     limelightSubsystem = new LimelightSubsystem();
-    intakeSubsystem = new IntakeSubsystem();
 
     
     continuousAutonomous = new ContinuousAutonomous(driveTrainSubsystem, m_timer);
-    continuousDriveXbox  = new ContinuousDriveXbox(driveTrainSubsystem, controlSubsystem, intakeSubsystem);
+    continuousDriveXbox  = new ContinuousDriveXbox(driveTrainSubsystem, controlSubsystem);
     continuousLimelight  = new ContinuousLimelight(limelightSubsystem);
     
     driveTrainSubsystem.setDefaultCommand(continuousDriveXbox);
