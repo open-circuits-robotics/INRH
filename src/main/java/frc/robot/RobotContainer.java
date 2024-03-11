@@ -25,7 +25,6 @@ public class RobotContainer {
   private final ControlSubsystem controlSubsystem;
   private final LimelightSubsystem limelightSubsystem;
   private final CommandXboxController driveXboxController;
-  private final CommandXboxController peripheralXboxController;
   private final ContinuousDriveXbox continuousDriveXbox;
   private final ContinuousAutonomous continuousAutonomous;
   private final ContinuousLimelight continuousLimelight;
@@ -36,10 +35,9 @@ public class RobotContainer {
 
   public RobotContainer() {
     driveXboxController = new CommandXboxController(0);
-    peripheralXboxController = new CommandXboxController(1);
     m_timer = new Timer();
     Motors.setMotors();
-    controlSubsystem    = new ControlSubsystem(driveXboxController.getHID(), peripheralXboxController.getHID(), 1, 1.0, 2);
+    controlSubsystem    = new ControlSubsystem(driveXboxController.getHID(), 1, 1.0, 2);
     driveTrainSubsystem = new DriveTrainSubsystem();
     limelightSubsystem = new LimelightSubsystem();
 

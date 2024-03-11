@@ -8,18 +8,16 @@ import frc.robot.DriveState;
 
 public class ControlSubsystem extends SubsystemBase {
     public final XboxController driveXboxController;
-    public final XboxController peripheralXboxController;
     public double sensitivity;
     public double rotationSpeed;
     public final int mode;
     
-    public ControlSubsystem(XboxController dXboxController, XboxController perXboxController) {
-        this(dXboxController, perXboxController, 1.0, 1.0, 2);
+    public ControlSubsystem(XboxController dXboxController) {
+        this(dXboxController, 1.0, 1.0, 2);
     }
     
-    public ControlSubsystem(XboxController dXboxController, XboxController perXboxController, double sen, double rotSpeed, int m) {
+    public ControlSubsystem(XboxController dXboxController, double sen, double rotSpeed, int m) {
         driveXboxController = dXboxController;
-        peripheralXboxController = perXboxController;
         sensitivity = sen;
         rotationSpeed = rotSpeed;
         mode = m;
@@ -65,8 +63,8 @@ public class ControlSubsystem extends SubsystemBase {
                     DriveMath.calculateSpeed(driveXboxController.getLeftY(), sensitivity), 
                     0,
                     DriveMath.calculateTurnSpeed(driveXboxController.getRightX(), rotationSpeed),
-                    peripheralXboxController.getLeftY(),
-                    peripheralXboxController.getLeftTriggerAxis(),
+                    0,
+                    0,
                     0
                     );
                     
