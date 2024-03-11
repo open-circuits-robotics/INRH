@@ -24,8 +24,6 @@ public class DriveState {
     public void sync(DriveTrainSubsystem driveTrainSubsystem) {
         driveTrainSubsystem.differentialDrive.arcadeDrive(xSpeed, rotation);
         System.out.println(xSpeed + " " + rotation);
-        Motors.can1.set (shooter);
-        Motors.can2.set(shooter * 0.7);
         System.out.println("shooter: " + shooter);
     }
 }
