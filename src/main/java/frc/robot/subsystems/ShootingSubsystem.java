@@ -9,7 +9,7 @@ import com.revrobotics.CANSparkMax;
 public class ShootingSubsystem extends SubsystemBase {
     public final CANSparkMax beltShooterMotor;
     public final CANSparkMax wheelShooterMotor;
-    public final PWMSparkMax secondWheelShooterMotor;
+    public final CANSparkMax secondWheelShooterMotor;
     // public final CANSparkMax shootingMotors;
     public ShootingSubsystem() {
         beltShooterMotor = Motors.beltShooterMotor;
