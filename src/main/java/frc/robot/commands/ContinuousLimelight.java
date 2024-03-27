@@ -20,9 +20,9 @@ public class ContinuousLimelight extends Command{
     
     public void readLimelight(Limelight l) {
        // System.out.print(l.name+":");
-            x    = l.tx.getDouble(0.1);
-            y    = l.ty.getDouble(0.1);
-            area = l.ta.getDouble(0.1);
+            x    = l.tx.getDouble(0.0);
+            y    = l.ty.getDouble(0.0);
+            area = l.ta.getDouble(0.0);
            // System.out.print(x+",");
             //System.out.print(y+",");
             //System.out.println(area);
