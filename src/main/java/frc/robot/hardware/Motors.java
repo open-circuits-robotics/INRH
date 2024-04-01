@@ -1,6 +1,9 @@
 package frc.robot.hardware;
 
 import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
+import edu.wpi.first.wpilibj.motorcontrol.Spark;
+import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
@@ -16,7 +19,9 @@ public class Motors {
 
     public final static CANSparkMax beltShooterMotor = new CANSparkMax(2, MotorType.kBrushless);
     public final static CANSparkMax wheelShooterMotor = new CANSparkMax(1, MotorType.kBrushless);
-    public final static CANSparkMax secondWheelShooterMotor = new CANSparkMax(9, MotorType.kBrushless);
+    public final static VictorSP secondWheelShooterMotor = new VictorSP(3);
+    public final static Spark leftClimberMotor = new Spark(6);
+    public final static Spark rightClimberMotor = new Spark(7);
 
     //motors for option 9
     /* 

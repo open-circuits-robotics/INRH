@@ -41,6 +41,7 @@ public class ControlSubsystem extends SubsystemBase {
                     DriveMath.calculateTurnSpeed(driveXboxController.getRightX(), rotationSpeed),
                     0,
                     0,
+                    0,
                     0
                 );
                 System.out.println("case 0");
@@ -50,6 +51,7 @@ public class ControlSubsystem extends SubsystemBase {
                     DriveMath.calculateSpeed(driveXboxController.getLeftY(), sensitivity),
                     DriveMath.calculateSpeed((driveXboxController.getLeftTriggerAxis()*-1+driveXboxController.getRightTriggerAxis()), sensitivity),
                     DriveMath.calculateTurnSpeed((driveXboxController.getRightX()*-1), rotationSpeed),
+                    0,
                     0,
                     0,
                     0
@@ -67,6 +69,7 @@ public class ControlSubsystem extends SubsystemBase {
                     DriveMath.calculateTurnSpeed(driveXboxController.getRightX(), rotationSpeed),
                     peripheralXboxController.getLeftY(),
                     peripheralXboxController.getLeftTriggerAxis(),
+                    0,
                     0
                     );
                     
@@ -77,6 +80,7 @@ public class ControlSubsystem extends SubsystemBase {
                     DriveMath.calculateSpeed(driveXboxController.getLeftY(), 1-driveXboxController.getLeftTriggerAxis()), 
                     DriveMath.calculateSpeed((driveXboxController.getLeftX() * -1), 1-driveXboxController.getLeftTriggerAxis()), 
                     DriveMath.calculateTurnSpeed(driveXboxController.getRightX()*-1, 0.82),
+                    0,
                     0,
                     0,
                     0
