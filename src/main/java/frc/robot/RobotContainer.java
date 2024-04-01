@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.ComplexAuto;
 import frc.robot.commands.ContinuousAutonomous;
 import frc.robot.commands.ContinuousDriveXbox;
 import frc.robot.commands.ContinuousLimelight;
@@ -17,6 +18,7 @@ import frc.robot.hardware.Motors;
 import frc.robot.commands.Spin;
 import frc.robot.subsystems.ControlSubsystem;
 import frc.robot.subsystems.DriveTrainSubsystem;
+import frc.robot.subsystems.GyroSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 
@@ -25,11 +27,13 @@ public class RobotContainer {
   private final DriveTrainSubsystem driveTrainSubsystem;
   private final ControlSubsystem controlSubsystem;
   private final IntakeSubsystem intakeSubsystem;
+  private final GyroSubsystem gyroSubsystem;
   private final LimelightSubsystem limelightSubsystem;
   private final CommandXboxController driveXboxController;
   private final CommandXboxController peripheralXboxController;
   private final ContinuousDriveXbox continuousDriveXbox;
   private final ContinuousAutonomous continuousAutonomous;
+  private final ComplexAuto complexAuto;
   private final ContinuousLimelight continuousLimelight;
   
   
@@ -45,9 +49,12 @@ public class RobotContainer {
     driveTrainSubsystem = new DriveTrainSubsystem();
     limelightSubsystem = new LimelightSubsystem();
     intakeSubsystem = new IntakeSubsystem();
+    gyroSubsystem = new GyroSubsystem(imu);
+    gyroSubsystem.resetCenter();
 
-    
     continuousAutonomous = new ContinuousAutonomous(driveTrainSubsystem, m_timer);
+    complexAuto = new ComplexAuto(driveTrainSubsystem, intakeSubsystem, gyroSubsystem);
+    
     continuousDriveXbox  = new ContinuousDriveXbox(driveTrainSubsystem, controlSubsystem, intakeSubsystem);
     continuousLimelight  = new ContinuousLimelight(limelightSubsystem);
     
@@ -72,6 +79,6 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return continuousAutonomous;
+    return complexAuto;
   }
 }

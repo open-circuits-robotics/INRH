@@ -33,4 +33,13 @@ public class DriveTrainSubsystem extends SubsystemBase {
         
     }
 
+    public void forward(double x) {
+        differentialDrive.arcadeDrive(x/5, 0);
+    }
+
+    public void rotate(double z) {
+        System.out.println("Rotating "+z);
+        differentialDrive.arcadeDrive(0, Math.min(Math.max(z, -0.75), 0.75));
+    }
+
 }
