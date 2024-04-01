@@ -70,7 +70,7 @@ public class ControlSubsystem extends SubsystemBase {
                     peripheralXboxController.getLeftY(),
                     peripheralXboxController.getLeftTriggerAxis(),
                     0,
-                    0
+                    (peripheralXboxController.getRightBumper() ? 1 : 0) + (Math.round(peripheralXboxController.getRightTriggerAxis()) * -1)
                     );
                     
                 //System.out.println("case 2");

@@ -14,6 +14,7 @@ public class DriveState {
     public final double angle;
     public final double climb;
     public final double climberSpeedConstant = 0.5;
+    public final double climbersSpeedConstant = 0.5;
     
 
     public DriveState(double xs, double ys, double rot, double in, double sh, double a, double climb) {
@@ -23,7 +24,7 @@ public class DriveState {
         intake = in;
         shooter = sh;
         angle = a;
-        this.climb = climb;
+        this.climb = climb * climbersSpeedConstant;
     }
 
     public void sync(DriveTrainSubsystem driveTrainSubsystem, IntakeSubsystem intakeSubsystem, ClimberSubsystem climberSubsystem) {
