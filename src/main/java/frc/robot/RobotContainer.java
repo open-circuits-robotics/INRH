@@ -16,6 +16,7 @@ import frc.robot.commands.ContinuousLimelight;
 import frc.robot.commands.TestMotor;
 import frc.robot.hardware.Motors;
 import frc.robot.commands.Spin;
+import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.ControlSubsystem;
 import frc.robot.subsystems.DriveTrainSubsystem;
 import frc.robot.subsystems.GyroSubsystem;
@@ -35,6 +36,7 @@ public class RobotContainer {
   private final ContinuousAutonomous continuousAutonomous;
   private final ComplexAuto complexAuto;
   private final ContinuousLimelight continuousLimelight;
+  private final ClimberSubsystem climberSubsystem;
   
   
   private final Timer m_timer;
@@ -49,13 +51,14 @@ public class RobotContainer {
     driveTrainSubsystem = new DriveTrainSubsystem();
     limelightSubsystem = new LimelightSubsystem();
     intakeSubsystem = new IntakeSubsystem();
+    climberSubsystem  = new ClimberSubsystem();
     gyroSubsystem = new GyroSubsystem(imu);
     gyroSubsystem.resetCenter();
 
     continuousAutonomous = new ContinuousAutonomous(driveTrainSubsystem, m_timer);
     complexAuto = new ComplexAuto(driveTrainSubsystem, intakeSubsystem, gyroSubsystem);
     
-    continuousDriveXbox  = new ContinuousDriveXbox(driveTrainSubsystem, controlSubsystem, intakeSubsystem);
+    continuousDriveXbox  = new ContinuousDriveXbox(driveTrainSubsystem, controlSubsystem, intakeSubsystem, climberSubsystem);
     continuousLimelight  = new ContinuousLimelight(limelightSubsystem);
     
     driveTrainSubsystem.setDefaultCommand(continuousDriveXbox);
